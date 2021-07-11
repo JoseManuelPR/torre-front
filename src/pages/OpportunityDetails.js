@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import parse, { domToReact, htmlToDOM } from 'html-react-parser';
 
 // material
 import { Box, Grid, Container, Typography, Stack, Avatar, Card } from '@material-ui/core';
@@ -28,7 +29,6 @@ export default function OpportunityDetails() {
 
   const [objective, setObjective] = useState('');
   const [timeframe, setTimeframe] = useState({});
-  const [stats, setStats] = useState({});
   const [members, setMembers] = useState([]);
   const [details, setDetails] = useState([]);
   const [place, setPlace] = useState({});
@@ -49,7 +49,6 @@ export default function OpportunityDetails() {
         const {
           objective,
           timeframe,
-          stats,
           members,
           details,
           place,
@@ -62,7 +61,6 @@ export default function OpportunityDetails() {
         } = data;
         setObjective(objective || '');
         setTimeframe(timeframe || {});
-        setStats(stats || {});
         setMembers(members || []);
         setDetails(details || []);
         setPlace(place || {});
@@ -111,7 +109,9 @@ export default function OpportunityDetails() {
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <Box>
-              <Typography variant="h3">{objective}</Typography>
+              <Typography variant="h3">
+                {objective} {opportunity}
+              </Typography>
               <Label
                 variant="filled"
                 color={place.remote ? 'success' : 'info'}
@@ -139,7 +139,7 @@ export default function OpportunityDetails() {
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <Box>
-              <Typography variant="h5">Strengths</Typography>
+              <Typography variant="h4">Strengths</Typography>
               {strengths.map((strength) => (
                 <Label
                   key={strength.id}
@@ -159,19 +159,19 @@ export default function OpportunityDetails() {
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <Box>
-              <Typography variant="h5">Company Name</Typography>
+              <Typography variant="h4">Company Name</Typography>
               <Stack direction="row" alignItems="center" spacing={2}>
                 <Avatar alt={organizationCover} src={organizationCover} />
-                <Typography variant="subtitle2" noWrap>
+                <Box variant="subtitle2" noWrap>
                   {organizationName}
-                </Typography>
+                </Box>
               </Stack>
             </Box>
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <Card>
               <Box style={{ margin: 40 }}>
-                <Typography align="center" variant="h5">
+                <Typography align="center" variant="h4">
                   Compensation
                 </Typography>
                 {visibleCompensation ? (
@@ -211,12 +211,18 @@ export default function OpportunityDetails() {
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <Box>
-              <Typography variant="h5">About this opportunity</Typography>
+              <Typography variant="h4">About this opportunity</Typography>
               {details ? (
                 <>
-                  <Typography variant="subtitle2" style={{ textTransform: 'capitalize' }} noWrap>
-                    details
-                  </Typography>
+                  {details.map((detail, item) => (
+                    <Grid key={item.id}>
+                      <br />
+                      <Typography variant="h6" style={{ textTransform: 'capitalize' }} noWrap>
+                        {detail.code}
+                      </Typography>
+                      <Box variant="subtitle2">{parse(`${detail.content}`)}</Box>
+                    </Grid>
+                  ))}
                 </>
               ) : (
                 <>
@@ -229,10 +235,38 @@ export default function OpportunityDetails() {
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <Box>
-              <Typography variant="h5">Time Frame</Typography>
-              <Typography variant="subtitle2" style={{ textTransform: 'capitalize' }} noWrap>
+              <Typography variant="h4">Time Frame</Typography>
+              <Box variant="subtitle2" style={{ textTransform: 'capitalize' }} noWrap>
                 {timeframe.type || 'No data'}
-              </Typography>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12}>
+            <Box>
+              <Typography variant="h4">Languages</Typography>
+              {languages.map((language, item) => (
+                <Label
+                  key={item.id}
+                  variant="filled"
+                  color="info"
+                  style={{ marginLeft: '0.5rem' }}
+                  sx={{
+                    top: 16,
+                    right: 16,
+                    textTransform: 'uppercase'
+                  }}
+                >
+                  {language.language.name} - {language.fluency}
+                </Label>
+              ))}
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12}>
+            <Box>
+              <Typography variant="h4">Members</Typography>
+              {/* {members.map((member, item) => (
+                
+              ))} */}
             </Box>
           </Grid>
         </Grid>
