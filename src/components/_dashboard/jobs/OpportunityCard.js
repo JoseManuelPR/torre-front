@@ -47,21 +47,19 @@ export default function OpportunityCard({ opportunity }) {
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        {remote && (
-          <Label
-            variant="filled"
-            color={remote ? 'success' : 'info'}
-            sx={{
-              zIndex: 9,
-              top: 16,
-              right: 16,
-              position: 'absolute',
-              textTransform: 'uppercase'
-            }}
-          >
-            {remote ? 'Remote' : 'No remote'}
-          </Label>
-        )}
+        <Label
+          variant="filled"
+          color={remote ? 'success' : 'info'}
+          sx={{
+            zIndex: 9,
+            top: 16,
+            right: 16,
+            position: 'absolute',
+            textTransform: 'uppercase'
+          }}
+        >
+          {remote ? 'Remote' : 'No remote'}
+        </Label>
         <ProductImgStyle alt={objective} src={cover} />
       </Box>
       <Stack spacing={2} sx={{ p: 3 }}>
@@ -98,11 +96,37 @@ export default function OpportunityCard({ opportunity }) {
                   {dataCompensation.maxAmount &&
                     fCurrency(dataCompensation.maxAmount, dataCompensation.currency)}
                 </Typography>
+                <br />
+                <Typography
+                  component="span"
+                  variant="body1"
+                  style={{ textTransform: 'capitalize' }}
+                  sx={{
+                    color: 'text.disabled'
+                  }}
+                >
+                  {dataCompensation.periodicity}
+                </Typography>
               </Typography>
             </Stack>
           </>
         ) : (
-          <></>
+          <>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Typography variant="subtitle1">
+                <Typography
+                  component="span"
+                  variant="body1"
+                  sx={{
+                    color: 'text.disabled'
+                  }}
+                >
+                  Sin información de la compensación
+                </Typography>
+                <br />
+              </Typography>
+            </Stack>
+          </>
         )}
       </Stack>
     </Card>
