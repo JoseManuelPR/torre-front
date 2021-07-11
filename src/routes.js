@@ -4,6 +4,7 @@ import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 //
 import Opportunities from './pages/Opportunities';
+import OpportunityDetails from './pages/OpportunityDetails';
 import Genome from './pages/Genome';
 import Bios from './pages/Bios';
 import Torre from './pages/Torre';
@@ -20,6 +21,7 @@ export default function Router() {
         { path: '/', element: <Navigate to="/dashboard/opportunities" replace /> },
         { path: 'me', element: <Genome /> },
         { path: 'opportunities', element: <Opportunities /> },
+        { path: 'opportunities/:id', element: <OpportunityDetails /> },
         { path: 'bios', element: <Bios /> },
         { path: 'bios/:user', element: <Genome /> }
       ]

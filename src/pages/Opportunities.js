@@ -8,11 +8,9 @@ import { OpportunitiesSort, OpportunitiesList } from '../components/_dashboard/j
 // ----------------------------------------------------------------------
 
 export default function Opportunities() {
-  const [openFilter, setOpenFilter] = useState(false);
-
-  const [offset, setOffset] = useState(200);
-  const [size, setSize] = useState(20);
-  const [aggregate, setAggregate] = useState(false);
+  const offset = 200;
+  const size = 20;
+  const aggregate = false;
   const [opportunities, setOpportunities] = useState([]);
 
   useEffect(() => {

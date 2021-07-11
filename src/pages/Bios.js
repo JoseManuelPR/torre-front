@@ -71,11 +71,11 @@ export default function Bios() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
-  const [offset, setOffset] = useState(200);
-  const [size, setSize] = useState(20);
-  const [aggregate, setAggregate] = useState(false);
+  const offset = 200;
+  const size = 25;
+  const aggregate = false;
   const [people, setPeople] = useState([]);
 
   useEffect(() => {
@@ -179,7 +179,6 @@ export default function Bios() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      console.log(row);
                       const {
                         subjectId,
                         name,

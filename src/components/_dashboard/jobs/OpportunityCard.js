@@ -28,7 +28,7 @@ export default function OpportunityCard({ opportunity }) {
   let visibleCompensation = false;
   let dataCompensation = {};
 
-  const { objective, organizations, remote, compensation } = opportunity;
+  const { id, objective, organizations, remote, compensation } = opportunity;
 
   if (compensation) {
     const { visible } = compensation;
@@ -63,7 +63,12 @@ export default function OpportunityCard({ opportunity }) {
         <ProductImgStyle alt={objective} src={cover} />
       </Box>
       <Stack spacing={2} sx={{ p: 3 }}>
-        <Link to="#" color="inherit" underline="hover" component={RouterLink}>
+        <Link
+          to={`/dashboard/opportunities/${id}`}
+          color="inherit"
+          underline="hover"
+          component={RouterLink}
+        >
           <Typography variant="subtitle2" noWrap>
             {objective}
           </Typography>
