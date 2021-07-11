@@ -1,0 +1,9 @@
+export { default as JobsStats } from './JobsStats';
+export { default as EducationStats } from './EducationStats';
+export { default as AwardStats } from './AwardStats';
+export { default as ProjectStats } from './ProjectStats';
+export { default as SocialMedias } from './SocialMedias';
+export { default as PersonalityTraitsResults } from './PersonalityTraitsResults';
+export { default as ActivitiesStats } from './ActivitiesStats';
+export { default as ListJobs } from './ListJobs';
+export { default as Languages } from './Languages';
