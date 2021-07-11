@@ -10,7 +10,7 @@ import Label from '../../Label';
 
 // ----------------------------------------------------------------------
 
-const ProductImgStyle = styled('img')({
+const OpportunityImgStyle = styled('img')({
   top: 0,
   width: '100%',
   height: '100%',
@@ -60,7 +60,7 @@ export default function OpportunityCard({ opportunity }) {
         >
           {remote ? 'Remote' : 'No remote'}
         </Label>
-        <ProductImgStyle alt={objective} src={cover} />
+        <OpportunityImgStyle alt={objective} src={cover} />
       </Box>
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link
