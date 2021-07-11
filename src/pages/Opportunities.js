@@ -1,50 +1,39 @@
-import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // material
 import { Container, Stack, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
-import {
-  ProductSort,
-  ProductList,
-  ProductCartWidget,
-  ProductFilterSidebar
-} from '../components/_dashboard/jobs';
-//
-import PRODUCTS from '../_mocks_/products';
+import { OpportunitiesSort, OpportunitiesList } from '../components/_dashboard/jobs';
 
 // ----------------------------------------------------------------------
 
 export default function Opportunities() {
   const [openFilter, setOpenFilter] = useState(false);
 
-  const formik = useFormik({
-    initialValues: {
-      gender: '',
-      category: '',
-      colors: '',
-      priceRange: '',
-      rating: ''
-    },
-    onSubmit: () => {
-      setOpenFilter(false);
-    }
-  });
+  const [offset, setOffset] = useState(200);
+  const [size, setSize] = useState(20);
+  const [aggregate, setAggregate] = useState(false);
+  const [opportunities, setOpportunities] = useState([]);
 
-  const { resetForm, handleSubmit } = formik;
+  useEffect(() => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    };
 
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
-  };
-
-  const handleCloseFilter = () => {
-    setOpenFilter(false);
-  };
-
-  const handleResetFilter = () => {
-    handleSubmit();
-    resetForm();
-  };
+    fetch(
+      `http://localhost:5023/api/opportunities/_search/${offset}/${size}/${aggregate}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const { results } = data;
+        setOpportunities(results || []);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [offset, size, aggregate]);
 
   return (
     <Page title="Jobs">
@@ -61,19 +50,11 @@ export default function Opportunities() {
           sx={{ mb: 5 }}
         >
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-            <ProductFilterSidebar
-              formik={formik}
-              isOpenFilter={openFilter}
-              onResetFilter={handleResetFilter}
-              onOpenFilter={handleOpenFilter}
-              onCloseFilter={handleCloseFilter}
-            />
-            <ProductSort />
+            <OpportunitiesSort />
           </Stack>
         </Stack>
 
-        <ProductList products={PRODUCTS} />
-        <ProductCartWidget />
+        <OpportunitiesList opportunities={opportunities} />
       </Container>
     </Page>
   );
