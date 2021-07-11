@@ -26,7 +26,14 @@ export default function MemberCard({ member }) {
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        <MemberImgStyle alt={person.username} src={person.picture} />
+        <MemberImgStyle
+          alt={person.username}
+          src={
+            person.picture
+              ? person.picture
+              : 'https://res.cloudinary.com/torre-technologies-co/image/upload/v1621443046/origin/bio/organizations/f7t0uvgrihgdrqh6ee9w.png'
+          }
+        />
       </Box>
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link
