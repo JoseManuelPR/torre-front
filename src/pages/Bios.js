@@ -24,6 +24,9 @@ import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar } from '../components/_dashboard/user';
+// API
+import { HOST_API } from '../config/environment';
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -87,7 +90,7 @@ export default function Bios() {
     };
 
     fetch(
-      `http://localhost:5023/api/bios/_search/?offset=${offset}&size=${size}&aggregate=${aggregate}`,
+      `${HOST_API}/api/bios/_search/?offset=${offset}&size=${size}&aggregate=${aggregate}`,
       requestOptions
     )
       .then((response) => response.json())

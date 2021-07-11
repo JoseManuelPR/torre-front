@@ -5,6 +5,8 @@ import { Container, Stack, Typography } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import { OpportunitiesSort, OpportunitiesList } from '../components/_dashboard/jobs';
+// API
+import { HOST_API } from '../config/environment';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +25,7 @@ export default function Opportunities() {
     };
 
     fetch(
-      `http://localhost:5023/api/opportunities/_search/?offset=${offset}&size=${size}&aggregate=${aggregate}`,
+      `${HOST_API}/api/opportunities/_search/?offset=${offset}&size=${size}&aggregate=${aggregate}`,
       requestOptions
     )
       .then((response) => response.json())

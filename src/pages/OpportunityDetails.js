@@ -12,6 +12,9 @@ import { MembersList } from '../components/_dashboard/jobs';
 
 import { fCurrency } from '../utils/formatNumber';
 
+// API
+import { HOST_API } from '../config/environment';
+
 // ----------------------------------------------------------------------
 
 const OpportunityImgStyle = styled('img')({
@@ -44,7 +47,7 @@ export default function OpportunityDetails() {
   let dataCompensation = {};
 
   useEffect(() => {
-    fetch(`http://localhost:5023/api/opportunities/${opportunityId}`)
+    fetch(`${HOST_API}/api/opportunities/${opportunityId}`)
       .then((response) => response.json())
       .then((data) => {
         const {

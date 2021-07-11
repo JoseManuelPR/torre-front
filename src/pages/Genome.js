@@ -17,6 +17,8 @@ import {
   Languages
 } from '../components/_dashboard/app';
 import { fShortenNumber } from '../utils/formatNumber';
+// API
+import { HOST_API } from '../config/environment';
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +43,7 @@ export default function Genome() {
   const [personalityTraitsResults, setPersonalityTraitsResults] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5023/api/bios/${username}`)
+    fetch(`${HOST_API}/api/bios/${username}`)
       .then((response) => response.json())
       .then((data) => {
         const { person, stats, personalityTraitsResults, languages } = data;
