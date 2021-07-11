@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Loader from 'react-loader-spinner';
 // material
 import { Container, Stack, Typography } from '@material-ui/core';
 // components
@@ -11,6 +12,8 @@ export default function Opportunities() {
   const offset = 200;
   const size = 20;
   const aggregate = false;
+
+  const [isLoading, setIsLoading] = useState(true);
   const [opportunities, setOpportunities] = useState([]);
 
   useEffect(() => {
@@ -27,6 +30,7 @@ export default function Opportunities() {
       .then((data) => {
         const { results } = data;
         setOpportunities(results || []);
+        setIsLoading(false);
       })
       .catch((e) => {
         console.log(e);
@@ -35,25 +39,43 @@ export default function Opportunities() {
 
   return (
     <Page title="Jobs">
-      <Container>
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Jobs
-        </Typography>
+      {isLoading ? (
+        <>
+          <Loader
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%'
+            }}
+            type="Rings"
+            color="#E9FCD4"
+            height={200}
+            width={200}
+          />
+        </>
+      ) : (
+        <>
+          <Container>
+            <Typography variant="h4" sx={{ mb: 5 }}>
+              Jobs
+            </Typography>
 
-        <Stack
-          direction="row"
-          flexWrap="wrap-reverse"
-          alignItems="center"
-          justifyContent="flex-end"
-          sx={{ mb: 5 }}
-        >
-          <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-            <OpportunitiesSort />
-          </Stack>
-        </Stack>
+            <Stack
+              direction="row"
+              flexWrap="wrap-reverse"
+              alignItems="center"
+              justifyContent="flex-end"
+              sx={{ mb: 5 }}
+            >
+              <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+                <OpportunitiesSort />
+              </Stack>
+            </Stack>
 
-        <OpportunitiesList opportunities={opportunities} />
-      </Container>
+            <OpportunitiesList opportunities={opportunities} />
+          </Container>
+        </>
+      )}
     </Page>
   );
 }

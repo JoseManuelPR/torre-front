@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { filter } from 'lodash';
 import { Link as RouterLink } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
 // material
 import {
   Card,
@@ -66,6 +67,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Bios() {
+  const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -89,6 +91,7 @@ export default function Bios() {
       .then((data) => {
         const { results } = data;
         setPeople(results || []);
+        setIsLoading(false);
       })
       .catch((e) => {
         console.log(e);
@@ -149,120 +152,138 @@ export default function Bios() {
 
   return (
     <Page title="Bios">
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            Bios
-          </Typography>
-        </Stack>
-
-        <Card>
-          <UserListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
+      {isLoading ? (
+        <>
+          <Loader
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%'
+            }}
+            type="Rings"
+            color="#E9FCD4"
+            height={200}
+            width={200}
           />
+        </>
+      ) : (
+        <>
+          <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography variant="h4" gutterBottom>
+                Bios
+              </Typography>
+            </Stack>
 
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={people.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const {
-                        subjectId,
-                        name,
-                        username,
-                        professionalHeadline,
-                        verified,
-                        picture,
-                        locationName
-                      } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+            <Card>
+              <UserListToolbar
+                numSelected={selected.length}
+                filterName={filterName}
+                onFilterName={handleFilterByName}
+              />
 
-                      return (
-                        <TableRow
-                          hover
-                          key={subjectId}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={picture} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{username}</TableCell>
-                          <TableCell align="left">{professionalHeadline}</TableCell>
-                          <TableCell align="left">
-                            <Label variant="ghost" color={verified ? 'success' : 'info'}>
-                              {verified ? 'Verified' : 'No verified'}
-                            </Label>
-                          </TableCell>
-                          <TableCell align="left">{locationName}</TableCell>
+              <Scrollbar>
+                <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                    <UserListHead
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={TABLE_HEAD}
+                      rowCount={people.length}
+                      numSelected={selected.length}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllClick={handleSelectAllClick}
+                    />
+                    <TableBody>
+                      {filteredUsers
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row) => {
+                          const {
+                            subjectId,
+                            name,
+                            username,
+                            professionalHeadline,
+                            verified,
+                            picture,
+                            locationName
+                          } = row;
+                          const isItemSelected = selected.indexOf(name) !== -1;
 
-                          <TableCell align="right">
-                            <Button
-                              variant="contained"
-                              component={RouterLink}
-                              to={`/dashboard/bios/${username}`}
+                          return (
+                            <TableRow
+                              hover
+                              key={subjectId}
+                              role="checkbox"
+                              selected={isItemSelected}
+                              aria-checked={isItemSelected}
                             >
-                              Genome
-                            </Button>
+                              <TableCell padding="checkbox">
+                                <Checkbox
+                                  checked={isItemSelected}
+                                  onChange={(event) => handleClick(event, name)}
+                                />
+                              </TableCell>
+                              <TableCell component="th" scope="row" padding="none">
+                                <Stack direction="row" alignItems="center" spacing={2}>
+                                  <Avatar alt={name} src={picture} />
+                                  <Typography variant="subtitle2" noWrap>
+                                    {name}
+                                  </Typography>
+                                </Stack>
+                              </TableCell>
+                              <TableCell align="left">{username}</TableCell>
+                              <TableCell align="left">{professionalHeadline}</TableCell>
+                              <TableCell align="left">
+                                <Label variant="ghost" color={verified ? 'success' : 'info'}>
+                                  {verified ? 'Verified' : 'No verified'}
+                                </Label>
+                              </TableCell>
+                              <TableCell align="left">{locationName}</TableCell>
+
+                              <TableCell align="right">
+                                <Button
+                                  variant="contained"
+                                  component={RouterLink}
+                                  to={`/dashboard/bios/${username}`}
+                                >
+                                  Genome
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell colSpan={6} />
+                        </TableRow>
+                      )}
+                    </TableBody>
+                    {isUserNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <SearchNotFound searchQuery={filterName} />
                           </TableCell>
                         </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
+                      </TableBody>
+                    )}
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25, 50]}
-            component="div"
-            count={people.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
-      </Container>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, 50]}
+                component="div"
+                count={people.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Card>
+          </Container>
+        </>
+      )}
     </Page>
   );
 }

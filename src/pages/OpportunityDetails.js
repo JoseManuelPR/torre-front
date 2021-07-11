@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import parse from 'html-react-parser';
-
+import Loader from 'react-loader-spinner';
 // material
 import { Box, Grid, Container, Typography, Stack, Avatar, Card } from '@material-ui/core';
 import { experimentalStyled as styled } from '@material-ui/core/styles';
@@ -28,6 +28,7 @@ export default function OpportunityDetails() {
 
   const opportunityId = id !== undefined ? id : '';
 
+  const [isLoading, setIsLoading] = useState(true);
   const [objective, setObjective] = useState('');
   const [timeframe, setTimeframe] = useState({});
   const [members, setMembers] = useState([]);
@@ -38,7 +39,6 @@ export default function OpportunityDetails() {
   const [strengths, setStrengths] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const [compensation, setCompensation] = useState({});
-  const [status, setStatus] = useState('');
 
   let visibleCompensation = false;
   let dataCompensation = {};
@@ -57,8 +57,7 @@ export default function OpportunityDetails() {
           opportunity,
           strengths,
           organizations,
-          compensation,
-          status
+          compensation
         } = data;
         setObjective(objective || '');
         setTimeframe(timeframe || {});
@@ -70,7 +69,7 @@ export default function OpportunityDetails() {
         setStrengths(strengths || []);
         setOrganizations(organizations || []);
         setCompensation(compensation || {});
-        setStatus(status || '');
+        setIsLoading(false);
       })
       .catch((e) => {
         console.log(e);
@@ -101,175 +100,201 @@ export default function OpportunityDetails() {
 
   return (
     <Page title="Opportunity Details">
-      <Container maxWidth="xl">
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={12} md={12}>
-            <Box>
-              <OpportunityImgStyle alt={objective} src={organizationCover} />
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <Box>
-              <Typography variant="h3">
-                {objective} {opportunity}
-              </Typography>
-              <Label
-                variant="filled"
-                color={place.remote ? 'success' : 'info'}
-                sx={{
-                  top: 16,
-                  right: 16,
-                  textTransform: 'uppercase'
-                }}
-              >
-                {place.remote ? 'Remote' : 'No remote'}
-              </Label>
-              <Label
-                variant="filled"
-                color="warning"
-                style={{ marginLeft: '0.5rem' }}
-                sx={{
-                  top: 16,
-                  right: 16,
-                  textTransform: 'uppercase'
-                }}
-              >
-                {locationName || 'No location'}
-              </Label>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <Box>
-              <Typography variant="h4">Strengths</Typography>
-              {strengths.map((strength) => (
-                <Label
-                  key={strength.id}
-                  variant="filled"
-                  color="info"
-                  style={{ marginLeft: '0.5rem' }}
-                  sx={{
-                    top: 16,
-                    right: 16,
-                    textTransform: 'uppercase'
-                  }}
-                >
-                  {strength.name}
-                </Label>
-              ))}
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <Box>
-              <Typography variant="h4">Company Name</Typography>
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <Avatar alt={organizationCover} src={organizationCover} />
-                <Box variant="subtitle2" noWrap>
-                  {organizationName}
+      {isLoading ? (
+        <>
+          <Loader
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%'
+            }}
+            type="Rings"
+            color="#E9FCD4"
+            height={200}
+            width={200}
+          />
+        </>
+      ) : (
+        <>
+          <Container maxWidth="xl">
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} md={12}>
+                <Box>
+                  <OpportunityImgStyle alt={objective} src={organizationCover} />
                 </Box>
-              </Stack>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <Card>
-              <Box style={{ margin: 40 }}>
-                <Typography align="center" variant="h4">
-                  Compensation
-                </Typography>
-                {visibleCompensation ? (
-                  <>
-                    <Typography align="center" variant="subtitle1">
-                      <Typography
-                        component="span"
-                        variant="body1"
-                        sx={{
-                          color: 'text.disabled'
-                        }}
-                      >
-                        {dataCompensation.minAmount &&
-                          fCurrency(dataCompensation.minAmount, dataCompensation.currency)}{' '}
-                        -{' '}
-                        {dataCompensation.maxAmount &&
-                          fCurrency(dataCompensation.maxAmount, dataCompensation.currency)}{' '}
-                        / {dataCompensation.periodicity}
-                      </Typography>
-                    </Typography>
-                  </>
-                ) : (
-                  <>
-                    <Typography
-                      component="span"
-                      variant="body1"
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Box>
+                  <Typography variant="h3">
+                    {objective} {opportunity}
+                  </Typography>
+                  <Label
+                    variant="filled"
+                    color={place.remote ? 'success' : 'info'}
+                    sx={{
+                      top: 16,
+                      right: 16,
+                      textTransform: 'uppercase'
+                    }}
+                  >
+                    {place.remote ? 'Remote' : 'No remote'}
+                  </Label>
+                  <Label
+                    variant="filled"
+                    color="warning"
+                    style={{ marginLeft: '0.5rem' }}
+                    sx={{
+                      top: 16,
+                      right: 16,
+                      textTransform: 'uppercase'
+                    }}
+                  >
+                    {locationName || 'No location'}
+                  </Label>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Box>
+                  <Typography variant="h4">Strengths</Typography>
+                  {strengths.map((strength) => (
+                    <Label
+                      key={strength.id}
+                      variant="filled"
+                      color="info"
+                      style={{ marginLeft: '0.5rem' }}
                       sx={{
-                        color: 'text.disabled'
+                        top: 16,
+                        right: 16,
+                        textTransform: 'uppercase'
                       }}
                     >
-                      Sin información de la compensación
-                    </Typography>
-                  </>
-                )}
-              </Box>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <Box>
-              <Typography variant="h4">About this opportunity</Typography>
-              {details ? (
-                <>
-                  {details.map((detail, item) => (
-                    <Grid key={item.id}>
-                      <br />
-                      <Typography variant="h6" style={{ textTransform: 'capitalize' }} noWrap>
-                        {detail.code}
-                      </Typography>
-                      <Box variant="subtitle2">{parse(`${detail.content}`)}</Box>
-                    </Grid>
+                      {strength.name}
+                    </Label>
                   ))}
-                </>
-              ) : (
-                <>
-                  <Typography variant="subtitle2" style={{ textTransform: 'capitalize' }} noWrap>
-                    The organization not published data about this opportunity
-                  </Typography>
-                </>
-              )}
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <Box>
-              <Typography variant="h4">Time Frame</Typography>
-              <Box variant="subtitle2" style={{ textTransform: 'capitalize' }} noWrap>
-                {timeframe.type || 'No data'}
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <Box>
-              <Typography variant="h4">Languages</Typography>
-              {languages.map((language, item) => (
-                <Label
-                  key={item.id}
-                  variant="filled"
-                  color="info"
-                  style={{ marginLeft: '0.5rem' }}
-                  sx={{
-                    top: 16,
-                    right: 16,
-                    textTransform: 'uppercase'
-                  }}
-                >
-                  {language.language.name} - {language.fluency}
-                </Label>
-              ))}
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <Box>
-              <Typography variant="h4">Members</Typography>
-              <MembersList style={{ display: 'flex', flexDirection: 'row' }} members={members} />
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Box>
+                  <Typography variant="h4">Company Name</Typography>
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <Avatar alt={organizationCover} src={organizationCover} />
+                    <Box variant="subtitle2" noWrap>
+                      {organizationName}
+                    </Box>
+                  </Stack>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Card>
+                  <Box style={{ margin: 40 }}>
+                    <Typography align="center" variant="h4">
+                      Compensation
+                    </Typography>
+                    {visibleCompensation ? (
+                      <>
+                        <Typography align="center" variant="subtitle1">
+                          <Typography
+                            component="span"
+                            variant="body1"
+                            sx={{
+                              color: 'text.disabled'
+                            }}
+                          >
+                            {dataCompensation.minAmount &&
+                              fCurrency(dataCompensation.minAmount, dataCompensation.currency)}{' '}
+                            -{' '}
+                            {dataCompensation.maxAmount &&
+                              fCurrency(dataCompensation.maxAmount, dataCompensation.currency)}{' '}
+                            / {dataCompensation.periodicity}
+                          </Typography>
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <Typography
+                          align="center"
+                          component="span"
+                          variant="body1"
+                          sx={{
+                            color: 'text.disabled'
+                          }}
+                        >
+                          Sin información de la compensación
+                        </Typography>
+                      </>
+                    )}
+                  </Box>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Box>
+                  <Typography variant="h4">About this opportunity</Typography>
+                  {details ? (
+                    <>
+                      {details.map((detail, item) => (
+                        <Grid key={item.id}>
+                          <br />
+                          <Typography variant="h6" style={{ textTransform: 'capitalize' }} noWrap>
+                            {detail.code}
+                          </Typography>
+                          <Box variant="subtitle2">{parse(`${detail.content}`)}</Box>
+                        </Grid>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      <Typography
+                        variant="subtitle2"
+                        style={{ textTransform: 'capitalize' }}
+                        noWrap
+                      >
+                        The organization not published data about this opportunity
+                      </Typography>
+                    </>
+                  )}
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Box>
+                  <Typography variant="h4">Time Frame</Typography>
+                  <Box variant="subtitle2" style={{ textTransform: 'capitalize' }} noWrap>
+                    {timeframe.type || 'No data'}
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Box>
+                  <Typography variant="h4">Languages</Typography>
+                  {languages.map((language, item) => (
+                    <Label
+                      key={item.id}
+                      variant="filled"
+                      color="info"
+                      style={{ marginLeft: '0.5rem' }}
+                      sx={{
+                        top: 16,
+                        right: 16,
+                        textTransform: 'uppercase'
+                      }}
+                    >
+                      {language.language.name} - {language.fluency}
+                    </Label>
+                  ))}
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
+                <Box>
+                  <Typography variant="h4">Members</Typography>
+                  <MembersList
+                    style={{ display: 'flex', flexDirection: 'row' }}
+                    members={members}
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+          </Container>
+        </>
+      )}
     </Page>
   );
 }
