@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import parse, { domToReact, htmlToDOM } from 'html-react-parser';
+import parse from 'html-react-parser';
 
 // material
 import { Box, Grid, Container, Typography, Stack, Avatar, Card } from '@material-ui/core';
@@ -8,6 +8,7 @@ import { experimentalStyled as styled } from '@material-ui/core/styles';
 // components
 import Page from '../components/Page';
 import Label from '../components/Label';
+import { MembersList } from '../components/_dashboard/jobs';
 
 import { fCurrency } from '../utils/formatNumber';
 
@@ -264,9 +265,7 @@ export default function OpportunityDetails() {
           <Grid item xs={12} sm={12} md={12}>
             <Box>
               <Typography variant="h4">Members</Typography>
-              {/* {members.map((member, item) => (
-                
-              ))} */}
+              <MembersList style={{ display: 'flex', flexDirection: 'row' }} members={members} />
             </Box>
           </Grid>
         </Grid>
