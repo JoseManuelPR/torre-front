@@ -86,7 +86,10 @@ export default function Bios() {
       headers: { 'Content-Type': 'application/json' }
     };
 
-    fetch(`http://localhost:5023/api/bios/_search/${offset}/${size}/${aggregate}`, requestOptions)
+    fetch(
+      `http://localhost:5023/api/bios/_search/?offset=${offset}&size=${size}&aggregate=${aggregate}`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((data) => {
         const { results } = data;

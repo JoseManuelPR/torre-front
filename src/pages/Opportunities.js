@@ -23,7 +23,7 @@ export default function Opportunities() {
     };
 
     fetch(
-      `http://localhost:5023/api/opportunities/_search/${offset}/${size}/${aggregate}`,
+      `http://localhost:5023/api/opportunities/_search/?offset=${offset}&size=${size}&aggregate=${aggregate}`,
       requestOptions
     )
       .then((response) => response.json())
