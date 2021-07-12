@@ -35,10 +35,10 @@ function LanguageItem({ languageData, isLast }) {
       </TimelineSeparator>
       <TimelineContent>
         <Typography variant="subtitle2">
-          {language} ({code.toUpperCase()})
+          {language || 'Nameless language'} {code ? `(${code.toUpperCase()})` : ''}
         </Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          {fluency.toUpperCase()}
+          {fluency ? fluency.toUpperCase() : 'No level required'}
         </Typography>
       </TimelineContent>
     </TimelineItem>

@@ -126,7 +126,7 @@ export default function OpportunityCard({ opportunity }) {
                     color: 'text.disabled'
                   }}
                 >
-                  Sin información de la compensación
+                  No information about compensation
                 </Typography>
                 <br />
               </Typography>

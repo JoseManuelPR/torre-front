@@ -8,10 +8,10 @@ import { Menu, Button, MenuItem, Typography } from '@material-ui/core';
 // ----------------------------------------------------------------------
 
 const SORT_BY_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
+  { value: 'lastest', label: 'Lastest' },
   { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' }
+  { value: 'compensationAsc', label: 'Compensation: High-Low' },
+  { value: 'compensationDesc', label: 'Compensation: Low-High' }
 ];
 
 export default function OpportunitiesSort() {

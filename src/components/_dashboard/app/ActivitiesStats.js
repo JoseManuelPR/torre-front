@@ -71,7 +71,7 @@ export default function ActivitiesStats({ activitiesStats }) {
 
   return (
     <Card>
-      <CardHeader title="Actvities Stats" />
+      <CardHeader title="Activities Stats" />
       <ChartWrapperStyle dir="ltr">
         <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
       </ChartWrapperStyle>

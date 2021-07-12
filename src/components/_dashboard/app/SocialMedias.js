@@ -17,7 +17,7 @@ function SiteItem({ site }) {
   return (
     <Grid item xs={6}>
       <Paper variant="outlined" sx={{ py: 2.5, textAlign: 'center' }}>
-        <a href={address}>
+        <a href={address || '#'}>
           <Box sx={{ mb: 0.5 }}>
             <Icon
               icon={name === 'linkedin' ? linkedinFill : twitterFill}

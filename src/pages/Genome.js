@@ -92,6 +92,7 @@ export default function Genome() {
 
   const username = user !== undefined ? user : 'josemanuelpr23';
 
+  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -120,24 +121,28 @@ export default function Genome() {
     fetch(`${HOST_API}/api/bios/${username}`)
       .then((response) => response.json())
       .then((data) => {
-        const { person, stats, personalityTraitsResults, languages } = data;
-        const { name, links, professionalHeadline, summaryOfBio, location, weight } = person;
-        const { jobs, education, awards, projects } = stats;
-        const { groups } = personalityTraitsResults;
-        setName(name || '');
-        setProfessionalHeadline(professionalHeadline || '');
-        setSummaryOfBio(summaryOfBio || '');
-        setCountry(location.country || '');
-        setListJobs(data.jobs || []);
-        setWeight(weight || '');
-        setJobs(jobs || 0);
-        setEducation(education || 0);
-        setAwards(awards || 0);
-        setProjects(projects || 0);
-        setLinks(links || []);
-        setLanguages(languages || []);
-        setPersonalityTraitsResults(groups || '');
-        setIsLoading(false);
+        try {
+          const { person, stats, personalityTraitsResults, languages } = data;
+          const { name, links, professionalHeadline, summaryOfBio, location, weight } = person;
+          const { jobs, education, awards, projects } = stats;
+          const { groups } = personalityTraitsResults;
+          setName(name || '');
+          setProfessionalHeadline(professionalHeadline || '');
+          setSummaryOfBio(summaryOfBio || '');
+          setCountry(location.country || '');
+          setListJobs(data.jobs || []);
+          setWeight(weight || '');
+          setJobs(jobs || 0);
+          setEducation(education || 0);
+          setAwards(awards || 0);
+          setProjects(projects || 0);
+          setLinks(links || []);
+          setLanguages(languages || []);
+          setPersonalityTraitsResults(groups || '');
+          setIsLoading(false);
+        } catch (error) {
+          setError(true);
+        }
       })
       .catch((e) => {
         console.log(e);
@@ -217,17 +222,28 @@ export default function Genome() {
     <Page title="Genome">
       {isLoading ? (
         <>
-          <Loader
-            style={{
-              position: 'absolute',
-              left: '50%',
-              top: '50%'
-            }}
-            type="Rings"
-            color="#E9FCD4"
-            height={200}
-            width={200}
-          />
+          {error ? (
+            <>
+              <Typography variant="h3">This genome don't have a complete profile</Typography>
+              <Button variant="contained" component={RouterLink} to="/dashboard/bios">
+                Return
+              </Button>
+            </>
+          ) : (
+            <>
+              <Loader
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%'
+                }}
+                type="Rings"
+                color="#E9FCD4"
+                height={200}
+                width={200}
+              />
+            </>
+          )}
         </>
       ) : (
         <>
@@ -285,7 +301,7 @@ export default function Genome() {
           <Container maxWidth="xl">
             <Card>
               <CardHeader
-                title="Showing aprox 20 jobs according to your skills"
+                title={`Showing ${probablyOpportunities.length} jobs according to your skills`}
                 subheader="This search is based on your skills mentioned in your genome."
               />
               <UserListToolbar
