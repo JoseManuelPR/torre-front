@@ -79,7 +79,7 @@ export default function Bios() {
   const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const offset = 200;
-  const size = 25;
+  const size = 100;
   const aggregate = false;
   const [people, setPeople] = useState([]);
 
@@ -278,7 +278,7 @@ export default function Bios() {
               </Scrollbar>
 
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 50]}
+                rowsPerPageOptions={[5, 10, 25, 50, 100]}
                 component="div"
                 count={people.length}
                 rowsPerPage={rowsPerPage}

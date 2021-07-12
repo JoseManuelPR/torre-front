@@ -12,7 +12,7 @@ import { HOST_API } from '../config/environment';
 
 export default function Opportunities() {
   const offset = 200;
-  const size = 20;
+  const size = 80;
   const aggregate = false;
 
   const [isLoading, setIsLoading] = useState(true);
